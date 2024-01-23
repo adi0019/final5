@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        tools:ignore="MissingConstraints">
+        <RelativeLayout
+            android:id="@+id/card_view2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="ExtraText">
+
+
+
+
+            <ImageView
+                android:id="@+id/profile"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_image"
+                android:contentDescription="TODO" />
+
+            <TextView
+                android:id="@+id/name_notification1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="user name"
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/profile">
+            </TextView>
+            <TextView
+                android:id="@+id/user_bio1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="@string/user_bio"
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/name_notification1">
+            </TextView>
+            <TextView
+                android:id="@+id/userid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="@string/user_bio"
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/user_bio1">
+            </TextView>
+
+
+            <Button
+                android:id="@+id/accept_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/userid"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="79dp"
+                android:layout_marginRight="79dp"
+                android:padding="5dp"
+                android:background="#58A85B"
+                android:textColor="#DAD5D5"
+                android:visibility="visible"
+                android:text="Video Call"
+                android:textAllCaps="false"
+                android:textSize="13sp"/>
+
+            <Button
+                android:id="@+id/decline_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accept_btn"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="79dp"
+                android:layout_marginRight="79dp"
+                android:padding="5dp"
+                android:background="#F12819"
+                android:textColor="#DAD5D5"
+                android:visibility="gone"
+                android:text="Decline Friend Request"
+                android:textAllCaps="false"
+                android:textSize="13sp">
+            </Button>
+
+        </RelativeLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

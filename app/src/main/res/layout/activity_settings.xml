@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/back"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/settings_profile_image"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/profile_image"
+        android:contentDescription="TODO">
+    </ImageView>
+    <EditText
+        android:id="@+id/username_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/edit_profile"
+        android:drawableTint="@android:color/white"
+        android:hint="Write your name"
+        android:textColorHint="@color/white"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/settings_profile_image"
+        android:autofillHints=""
+        >
+</EditText>
+
+    <EditText
+        android:id="@+id/bio_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username_settings"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:drawableLeft="@drawable/settings"
+        android:drawableTint="@android:color/white"
+        android:hint="Write your bio"
+        android:textColor="@color/white"
+        android:autofillHints=""
+        />
+  <!--  <Button
+        android:id="@+id/edit_settings_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="20dp"
+        android:text="Edit Profile"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/bio_settings">
+    </Button>-->
+    <Button
+        android:id="@+id/save_settings_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="20dp"
+        android:text="Create Profile"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/bio_settings">
+</Button>
+
+</RelativeLayout>
