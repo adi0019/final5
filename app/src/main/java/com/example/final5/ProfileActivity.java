@@ -41,7 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView name_profile;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
-    private String senderUserId;
+    private String senderUserId, senderImage;
     private String currentState = "new";
     private DatabaseReference friendRequestRef, requestRef, friends, mUserRef;
 
@@ -71,6 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         senderUserId = mAuth.getCurrentUser().getUid();
+       // senderImage= mAuth.getCurrentUser().getim()
         sendername = mAuth.getCurrentUser().getDisplayName();
         mUser = mAuth.getCurrentUser();
         mUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(receiverUserID);
@@ -309,14 +310,15 @@ public class ProfileActivity extends AppCompatActivity {
                   if(task.isSuccessful()){
                       HashMap hashMap=new HashMap();
                       hashMap.put("status","friend");
-                      hashMap.put("username", receiverUserName);
-                    //  hashMap.put("uid", senderUserId);
-                      hashMap.put("profileImageUrl", receiverUserImage);
+                      hashMap.put("name", receiverUserName);
+                      hashMap.put("uid", receiverUserID);
+                      hashMap.put("bio",bio);
+                      hashMap.put("image", receiverUserImage);
 
                       HashMap hashMap1=new HashMap();
-                      hashMap1.put("status","friend");
+                      hashMap1.put("status","friend1");
                       hashMap1.put("name", nameDb);
-                    //  hashMap.put("uid", receiverUserID);
+                      hashMap1.put("uid", senderUserId);
                       hashMap1.put("image",imageUrl);
                       hashMap1.put("bio",bioDb);
                     //  hashMap1.put("profileImageUrl",myPrfileImageUrl);

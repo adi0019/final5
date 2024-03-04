@@ -42,19 +42,22 @@ public class homepage  extends AppCompatActivity  {
 
     BottomNavigationView navView;
     private DatabaseReference usersRef;
+    String listUserId, calledBy="";
 
     private  String str="";
     RecyclerView myContactsList;
     ImageView findPeopleBtn;
     FirebaseAuth mAuth;
     RecyclerView recyclerView;
-    DatabaseReference mRef;
+    DatabaseReference mRef, mUserRef, UsersRef;
     FirebaseUser mUser;
     public String visituserid;
 
     Button videocall;
 
     String UserID;
+    String receiverUserID;
+  private   String currentUserID;
 
     @SuppressLint({"MissingInflatedId", "CutPasteId"})
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +67,13 @@ public class homepage  extends AppCompatActivity  {
         mUser=mAuth.getCurrentUser();
         mRef=FirebaseDatabase.getInstance().getReference().child("Friends");
         videocall=findViewById(R.id.accept_btn);
+      //  mUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(receiverUserID);
+        usersRef= FirebaseDatabase.getInstance().getReference().child("Users");
+       // senderUserId= FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        UserID=user.getUid();
+     //   UserID=user.getUid();
+        currentUserID =mAuth.getCurrentUser().getUid();
 
 
         BottomNavigationView navigationView = findViewById(R.id.nav_view);
@@ -80,15 +87,7 @@ public class homepage  extends AppCompatActivity  {
 
      //   edittext();
 
-//        videocall.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent callingIntent = new Intent(homepage.this, CallingActivity.class);
-//                callingIntent.putExtra("vistiuserid",visituserid);
-//                startActivity(callingIntent);
-//
-//            }
-//        });
+
 
         findPeopleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +98,36 @@ public class homepage  extends AppCompatActivity  {
         });
            LoadFriends("");
 
+
+
+    }
+    protected void  onStart(){
+        super.onStart();
+        checkForReceivingCall();
+    }
+
+    private void checkForReceivingCall() {
+        usersRef.child (currentUserID)
+                .child ("Ringing")
+                .addValueEventListener (new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild("ringing"))
+                        {
+                         //   calledBy = dataSnapshot.child("ringing").getValue().toString();
+                            Intent callingIntent = new Intent(homepage.this, CallingActivity.class);
+                            callingIntent.putExtra("visit_user_id",calledBy);
+                            startActivity(callingIntent);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
     }
 
     private void LoadFriends(String s) {
@@ -107,10 +136,19 @@ public class homepage  extends AppCompatActivity  {
         adapter=new FirebaseRecyclerAdapter<Friends, FriendMyViewHlder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull FriendMyViewHlder holder, int position, @NonNull Friends model) {
+                // listUserId= getRef(position).getKey();
                 Picasso.get().load(model.getImage()).into(holder.profile);
                 holder.bio.setText(model.getStatus());
                 holder.name.setText(model.getName());
                 visituserid=model.getUid();
+                holder.videocallbtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent callingIntent = new Intent(homepage.this, CallingActivity.class);
+                        callingIntent.putExtra("visit_user_id",visituserid);
+                        startActivity(callingIntent);
+                    }
+                });
 
             }
 
@@ -200,6 +238,7 @@ public class homepage  extends AppCompatActivity  {
             }
         });
     }
+
 
 }
 
