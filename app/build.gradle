@@ -5,6 +5,12 @@ plugins {
 }
 
 android {
+    packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+    }
     compileSdk 33
 
     defaultConfig {
@@ -57,7 +63,14 @@ dependencies {
 
     // jitsi meet
     //implementation 'org.jitsi.react:jitsi-meet-sdk:2.8.2'
-  //  implementation('org.jitsi.react:jitsi-meet-sdk:7.0.2') { transitive = true }
+   // implementation('org.jitsi.react:jitsi-meet-sdk:7.0.2') { transitive = true }
    // implementation 'org.jitsi.react:jitsi-meet-sdk:3.11.0'
-    implementation ('org.jitsi.react:jitsi-meet-sdk:+') { transitive = true }
+  //  implementation ('org.jitsi.react:jitsi-meet-sdk:+') { transitive = true }
+    implementation ('org.jitsi.react:jitsi-meet-sdk:9.0.2') { transitive = true }
+   // implementation ('org.jitsi.react:jitsi-meet-sdk:+') { transitive = true }
+//    implementation project(':react-native-mydependency')
+
+  //  implementation 'com.github.jiangdongguo.AndroidUSBCamera:libausbc:latest_tag'
+
+
 }

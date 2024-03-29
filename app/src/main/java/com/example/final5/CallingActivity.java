@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,7 +38,9 @@ public class CallingActivity extends AppCompatActivity {
 
     public static  final  String REMOTE_MEETING_ROOM ="meetingRoom";
 
-  
+    private MediaPlayer mediaPlayer;
+
+
     private DatabaseReference usersRef;
 
     @Override
@@ -54,12 +57,14 @@ public class CallingActivity extends AppCompatActivity {
         profileImage =findViewById(R.id.profile_image_calling);
         cancelCallBtn =findViewById(R.id.cancel_call);
         makeCallBtn = findViewById(R.id.make_call);
-        
+        mediaPlayer = MediaPlayer.create(this, R.raw.ringing);
+
         getAndSetReciverProfileInfo();
 
         cancelCallBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer.stop();
                 checker="clicked";
                 cancelCallingUser();
 
@@ -68,31 +73,31 @@ public class CallingActivity extends AppCompatActivity {
         makeCallBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            final HashMap<String, Object> callingPickUpMap = new HashMap<>();
-             callingPickUpMap.put("picked", "picked");
-             usersRef.child(senderUserId).child("Ringing")
-                     .updateChildren(callingPickUpMap)
-                     .addOnCompleteListener(new OnCompleteListener<Void>() {
-                         @Override
-                         public void onComplete(@NonNull Task<Void> task) { try {
-                          //   URL serverURL = new URL("https://meet.jit.si");
-                             URL serverURL = new URL("https://meet.guifi.net");
-                             JitsiMeetConferenceOptions conferenceOptions =
-                                     new JitsiMeetConferenceOptions.Builder()
-                                             .setServerURL(serverURL)
-                                             .setRoom(senderUserId)
-                                             .build();
-                             JitsiMeetActivity.launch(CallingActivity.this,conferenceOptions);
-                             finish();
+                final HashMap<String, Object> callingPickUpMap = new HashMap<>();
+                callingPickUpMap.put("picked", "picked");
+                usersRef.child(senderUserId).child("Ringing")
+                        .updateChildren(callingPickUpMap)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) { try {
+                                //   URL serverURL = new URL("https://meet.jit.si");
+                                URL serverURL = new URL("https://meet.guifi.net");
+                                JitsiMeetConferenceOptions conferenceOptions =
+                                        new JitsiMeetConferenceOptions.Builder()
+                                                .setServerURL(serverURL)
+                                                .setRoom(senderUserId)
+                                                .build();
+                                JitsiMeetActivity.launch(CallingActivity.this,conferenceOptions);
+                                finish();
 
-                         }
-                         catch (Exception exception){
-                             Toast.makeText(CallingActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-                             finish();
-                         }
+                            }
+                            catch (Exception exception){
+                                Toast.makeText(CallingActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
 
-                         }
-                     });
+                            }
+                        });
 
             }
         });
@@ -105,22 +110,22 @@ public class CallingActivity extends AppCompatActivity {
             @Override
             public void onDataChange (DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(receiverUserId).exists()) {
-                 //   receiverUserImage = dataSnapshot.child(receiverUserId).child("image").getValue().toString();
-                 //   receiverUserName = dataSnapshot.child(receiverUserId).child("name").getValue().toString();
+                    //   receiverUserImage = dataSnapshot.child(receiverUserId).child("image").getValue().toString();
+                    //   receiverUserName = dataSnapshot.child(receiverUserId).child("name").getValue().toString();
 
-                  //  nameContact.setText(receiverUserName);
-                 //   Picasso.get().load(receiverUserImage).placeholder(R.drawable.profile_image).into(profileImage);
+                    //  nameContact.setText(receiverUserName);
+                    //   Picasso.get().load(receiverUserImage).placeholder(R.drawable.profile_image).into(profileImage);
                 }
                 if (dataSnapshot.child(senderUserId).exists()) {
-                     senderUserImage=dataSnapshot.child(senderUserId).child("image").getValue().toString();
-                     senderUserName=dataSnapshot.child(senderUserId).child("name").getValue().toString();
+                    senderUserImage=dataSnapshot.child(senderUserId).child("image").getValue().toString();
+                    senderUserName=dataSnapshot.child(senderUserId).child("name").getValue().toString();
                 }
             }
             @Override
             public void onCancelled (DatabaseError databaseError) {
             }
         });
-            }
+    }
     protected  void  onStart() {
 
         super.onStart();
@@ -129,7 +134,7 @@ public class CallingActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(!checker.equals("clicked") && !snapshot.hasChild("Calling") && !snapshot.hasChild("Ringing")){
-
+                              mediaPlayer.start();
                             final HashMap<String, Object> callingInfo = new HashMap();
 
                             callingInfo.put ("calling", receiverUserId);
@@ -163,7 +168,7 @@ public class CallingActivity extends AppCompatActivity {
                 }
                 if(snapshot.child(receiverUserId).child("Ringing").hasChild("picked")){
                     try {
-                      //  URL serverURL = new URL("https://meet.jit.si");
+                        //  URL serverURL = new URL("https://meet.jit.si");
                         URL serverURL = new URL("https://meet.guifi.net");
                         JitsiMeetConferenceOptions conferenceOptions =
                                 new JitsiMeetConferenceOptions.Builder()
@@ -203,18 +208,18 @@ public class CallingActivity extends AppCompatActivity {
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                           if(task.isSuccessful()){
-                                               usersRef.child(senderUserId)
-                                                       .child("Calling")
-                                                       .removeValue()
-                                                       .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                           @Override
-                                                           public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                usersRef.child(senderUserId)
+                                                        .child("Calling")
+                                                        .removeValue()
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
                                                                 startActivity(new Intent(CallingActivity.this,settings.class));
                                                                 finish();
-                                                           }
-                                                       });
-                                           }
+                                                            }
+                                                        });
+                                            }
                                         }
                                     });
                         }
@@ -252,7 +257,7 @@ public class CallingActivity extends AppCompatActivity {
                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                startActivity(new Intent(CallingActivity.this,settings.class));
+                                                                startActivity(new Intent(CallingActivity.this, homepage.class));
                                                                 finish();
                                                             }
                                                         });
@@ -261,7 +266,7 @@ public class CallingActivity extends AppCompatActivity {
                                     });
                         }
                         else {
-                            startActivity(new Intent(CallingActivity.this,homepage.class));
+                            startActivity(new Intent(CallingActivity.this, homepage.class));
                             finish();
                         }
                     }
@@ -269,9 +274,10 @@ public class CallingActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
+
                     }
                 });
 
     }
 
-    }
+}

@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Final5">
         <activity
+            android:name=".BASE"
+            android:exported="false" />
+        <activity
             android:name=".CallingActivity"
             android:exported="false" />
         <activity
